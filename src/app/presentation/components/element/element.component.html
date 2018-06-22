@@ -1,0 +1,33 @@
+<div
+  class="element"
+  [style.top.%]="element.layout.top"
+  [style.right.%]="element.layout.right"
+  [style.bottom.%]="element.layout.bottom"
+  [style.left.%]="element.layout.left"
+  [style.background-color]="element.style['background-color']"
+  [style.color]="element.style.color">
+
+  <ng-container *ngIf="element.type === 'media'">
+    <ng-container *ngIf="(element.media.mime | getMediaType) == 'image'">
+      <img
+        [style.width.%]="100"
+        src="{{ 'https://cdn.snap.menu/version/' + element.media.token + '.' + (element.media.mime | getMediaExpansion) }}"/>
+    </ng-container>
+    <ng-container *ngIf="(element.media.mime | getMediaType) == 'video'">
+      <video
+        [style.width]="element.media.meta.width"
+        [style.height]="element.media.meta.height"
+        autoplay="autoplay"
+        controls="controls" >
+        <source
+          src="{{ 'https://cdn.snap.menu/version/' + element.media.token + '_' + element.media.meta.width + '_' + element.media.meta.height + '.' + (element.media.mime | getMediaExpansion) }}"
+          type='{{ element.media.mime }}'>
+        Тег video не поддерживается вашим браузером.
+      </video>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="element.type === 'text'">
+    <div [innerHTML]="element.html.text | safeHtml"></div>
+  </ng-container>
+</div>
